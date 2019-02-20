@@ -1,32 +1,56 @@
-import Html exposing (..)
-import Html.Events exposing (onClick)
-import Platform.Cmd
+module Main exposing (..)
 
-main =
-  Html.program
-      { init = (0, Cmd.none)
-      , update = update
-      , view = view
-      , subscriptions = \_ -> Sub.none
-      }
+import Browser
+import Html exposing (Html, text, div, h1, img)
+import Html.Attributes exposing (src)
 
-type Msg = Increment | Decrement
 
-type alias Model = Int
+---- MODEL ----
+
+
+type alias Model =
+    {}
+
+
+init : ( Model, Cmd Msg )
+init =
+    ( {}, Cmd.none )
+
+
+
+---- UPDATE ----
+
+
+type Msg
+    = NoOp
+
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
-  case msg of
-    Increment ->
-      ( model + 1 ) ! []
+    ( model, Cmd.none )
 
-    Decrement ->
-      ( model - 1 ) ! []
 
+
+---- VIEW ----
+
+
+view : Model -> Html Msg
 view model =
-  div []
-    [ div [] [text "Basically Hacker News!"]
-    , button [ onClick Decrement ] [ text "-" ]
-    , div [] [ text (toString model) ]
-    , button [ onClick Increment ] [ text "+" ]
-    ]
+    div []
+        [ img [ src "/logo.svg" ] []
+        , h1 [] [ text "Your Elm App is working!" ]
+        ]
+
+
+
+---- PROGRAM ----
+
+
+main : Program () Model Msg
+main =
+    Browser.element
+        { view = view
+        , init = \_ -> init
+        , update = update
+        , subscriptions = always Sub.none
+        }
