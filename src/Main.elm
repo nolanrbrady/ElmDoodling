@@ -39,8 +39,8 @@ update msg model =
 ---- VIEW ----
 view : Model -> Html Msg
 view model =
-    div []
-        [ img [ src "../public/logo.svg" ] []
+    div [style "width" "100%", style "text-align" "center"]
+        [ img [ src "../public/logo.svg", style "height" " 150px", style "width" "150px" ] []
         , div [style "justify-content" "center", style "align-items" "center"] 
                 [ h1 [ style "color" "red"] [ text "Attempting a To Do list!" ]
             , p [] [ text "This is another test"]
