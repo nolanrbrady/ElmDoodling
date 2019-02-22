@@ -2,7 +2,7 @@ module Main exposing (..)
 
 import Browser
 import Html exposing (..)
-import Html.Attributes exposing (src)
+import Html.Attributes exposing (..)
 
 
 ---- MODEL ----
@@ -38,8 +38,12 @@ view : Model -> Html Msg
 view model =
     div []
         [ img [ src "../public/logo.svg" ] []
-        , h1 [] [ text "Your Elm App is working!" ]
+        , h1 [ style "color" "red"] [ text "Attempting a To Do list!" ]
         , p [] [ text "This is another test"]
+        , input [ style "width" "200px", style "border-radius" "15px"] []
+        , button [] [text "Submit Item"]
+        , div [] [ text "This is a test"
+        , div [ style "color" "blue"] [ text "Another One" ]]
         ]
 
 
