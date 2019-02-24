@@ -26,6 +26,18 @@ initModel =
     , uid = 0
     }
 
+---- HELPER FUNCTIONS ----
+renderItem : TodoItem -> Html Msg
+renderItem item =
+    div [] [text item.todo]
+
+renderList : List TodoItem -> Html Msg
+renderList list =
+    let 
+        itemList = List.map renderItem list
+    in 
+        div [] itemList
+
 type Msg = Increment 
     | Decrement
 
@@ -52,7 +64,8 @@ view model =
             , div [ style "padding-top" "20px"] 
                 [ button [] [text "Add Item"]]]
         , div [ style "margin-top" "10px"] 
-            [ text "Your list includes:"]
+            [ text "Your list includes:"
+            , renderList model.list]
         ]
 
 main = Browser.sandbox
