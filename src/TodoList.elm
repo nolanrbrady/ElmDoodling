@@ -38,7 +38,13 @@ generateItem model =
 
 renderItem : TodoItem -> Html Msg
 renderItem item =
-    div [] [text item.todo]
+    div [] 
+        [ text (String.fromInt item.uid ++ ")")
+        , text item.todo
+        , input 
+            [ type_ "checkbox"
+            , checked item.done
+            , style "margin-left" "10px"] []]
 
 renderList : List TodoItem -> Html Msg
 renderList list =
@@ -87,8 +93,6 @@ view model =
                 [ button [ onClick AddItem ] [text "Add Item"]]]
         , div [ style "margin-top" "10px"] 
             [ text "Your list includes:"
-            , text (String.fromInt model.uid)
-            , text model.item
             , renderList model.list]
         ]
 
