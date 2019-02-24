@@ -5,6 +5,7 @@ import Html exposing (..)
 import Html.Events exposing (..)
 import Html.Attributes exposing (..)
 
+---- TYPE DECLARATIONS ----
 type alias TodoItem = 
     { todo : String
     , uid : Int
@@ -18,6 +19,7 @@ type alias Model =
     , uid : Int
     }
 
+---- MODEL ----
 initModel : Model
 initModel =  
     { value = 0
@@ -27,6 +29,13 @@ initModel =
     }
 
 ---- HELPER FUNCTIONS ----
+generateItem : Model -> TodoItem
+generateItem model =
+    { todo = model.item 
+    , uid = model.uid + 1
+    , done = False
+    }
+
 renderItem : TodoItem -> Html Msg
 renderItem item =
     div [] [text item.todo]
@@ -38,8 +47,11 @@ renderList list =
     in 
         div [] itemList
 
+---- UPDATE ----
 type Msg = Increment 
     | Decrement
+    | AddItem
+    | UpdateTodoItem String
 
 update : Msg -> Model -> Model
 update msg model =
@@ -50,6 +62,14 @@ update msg model =
         Decrement ->
             { model | value = model.value - 1}
 
+        AddItem -> {model | 
+            list = generateItem model :: model.list, 
+            uid = model.uid,
+            item = ""}
+
+        UpdateTodoItem str -> {model | item = str}
+
+---- VIEW ----
 view : Model -> Html Msg
 view model =
         div[ style "text-align" "center"] 
@@ -60,11 +80,15 @@ view model =
             , button [ onClick Increment, style "margin-left" "10px"] [text "+"]]
         , div [ style "padding-top" "20px"] 
             [input [ placeholder "What do you have to do?"
-                    , style "width" "200px"] []
+                    , style "width" "200px"
+                    , onInput UpdateTodoItem
+                    , value model.item] []
             , div [ style "padding-top" "20px"] 
-                [ button [] [text "Add Item"]]]
+                [ button [ onClick AddItem ] [text "Add Item"]]]
         , div [ style "margin-top" "10px"] 
             [ text "Your list includes:"
+            , text (String.fromInt model.uid)
+            , text model.item
             , renderList model.list]
         ]
 
