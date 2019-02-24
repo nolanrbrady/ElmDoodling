@@ -4,6 +4,7 @@ import Browser
 import Html exposing (..)
 import Html.Events exposing (..)
 import Html.Attributes exposing (..)
+import NavBar as NavigationBar
 
 
 ---- MODEL ----
@@ -40,9 +41,10 @@ update msg model =
 view : Model -> Html Msg
 view model =
     div [style "width" "100%", style "text-align" "center"]
-        [ img [ src "../public/logo.svg", style "height" " 150px", style "width" "150px" ] []
+        [ div[] [ NavigationBar.main]
+        , img [ src "../public/logo.svg", style "height" " 150px", style "width" "150px" ] []
         , div [style "justify-content" "center", style "align-items" "center"] 
-                [ h1 [ style "color" "red"] [ text "Attempting a To Do list!" ]
+                [ h1 [ style "color" "red"] [ text "The Elm Bike Shedding Project" ]
             , p [] [ text "This is another test"]
             , input [ style "width" "200px"
                     , style "border-radius" "15px"
