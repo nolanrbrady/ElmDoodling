@@ -12,11 +12,14 @@ type alias TodoItem =
     , done : Bool
     }
 
+type ItemUID = Int | None
+
 type alias Model =
     { value : Int
     , item : String
     , list : List TodoItem
     , uid : Int
+    , itemUID : ItemUID
     }
 
 ---- MODEL ----
@@ -24,8 +27,9 @@ initModel : Model
 initModel =  
     { value = 0
     , item = ""
-    , list = [{ todo = "This is the first test", uid = 0, done = False }, { todo = "This is the second test", uid = 1, done = False}]
+    , list = []
     , uid = 0
+    , itemUID = None
     }
 
 ---- HELPER FUNCTIONS ----
@@ -48,15 +52,17 @@ generateItem model =
     , done = False
     }
 
-renderItem : TodoItem -> Html Msg
+renderItem : TodoItem ->  Html Msg
 renderItem item =
-    div [] 
+    div [ style "display" "flex", style "flex-direction" "row", style "justify-content" "center"]
         [ text (String.fromInt item.uid ++ ")")
         , text item.todo
         , input 
             [ type_ "checkbox"
             , checked item.done
-            , style "margin-left" "10px"] []]
+            , style "margin-left" "10px"] []
+        , div [] [ button [] [text "Edit Item"] ]
+        ]
 
 renderList : List TodoItem -> Html Msg
 renderList list =
@@ -70,6 +76,7 @@ type Msg = Increment
     | Decrement
     | AddItem
     | UpdateTodoItem String
+    | EditItem ItemUID
 
 update : Msg -> Model -> Model
 update msg model =
@@ -86,7 +93,11 @@ update msg model =
             in
                 { model | list = list, uid = uid, item = item }
 
-        UpdateTodoItem str -> {model | item = str}
+        UpdateTodoItem str ->
+            { model | item = str }
+
+        EditItem uid -> { model | itemUID = uid }
+
 
 ---- VIEW ----
 view : Model -> Html Msg
@@ -104,10 +115,10 @@ view model =
                     , value model.item] []
             , div [ style "padding-top" "20px"] 
                 [ button [ onClick AddItem ] [text "Add Item"]]]
-        , div [ style "margin-top" "10px"] 
-            [ text "Your list includes:"
-            , renderList model.list]
-        ]
+            , div [ style "margin-top" "10px"] 
+                [ text "Your list includes:"
+                ,  renderList model.list]]
+
 
 main = Browser.sandbox
     { init = initModel
