@@ -29,6 +29,18 @@ initModel =
     }
 
 ---- HELPER FUNCTIONS ----
+handleListInsert model =
+    case model.item of
+        "" -> { list = model.list
+              , uid = model.uid
+              , item = ""
+              }
+
+        _ -> { list = generateItem model :: model.list
+             , uid = model.uid + 1
+             , item = ""
+             }
+
 generateItem : Model -> TodoItem
 generateItem model =
     { todo = model.item 
@@ -68,10 +80,11 @@ update msg model =
         Decrement ->
             { model | value = model.value - 1}
 
-        AddItem -> {model | 
-            list = generateItem model :: model.list, 
-            uid = model.uid,
-            item = ""}
+        AddItem ->
+            let
+                { list, uid, item } = handleListInsert model
+            in
+                { model | list = list, uid = uid, item = item }
 
         UpdateTodoItem str -> {model | item = str}
 
